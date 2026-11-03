@@ -54,7 +54,15 @@ class DockChip(Static):
         self.viz = viz
 
     def on_click(self) -> None:
-        self.app.switch_chart_of_focus(self.viz)
+        from .widgets import Wing
+
+        app = self.app
+        wing = app._focused_wing() or next(iter(app.screen.query(Wing)), None)
+        if wing is None:
+            return
+        wing.chart_type = self.viz
+        wing.focus()
+        wing.refresh()
 
 
 class Overview(Screen):

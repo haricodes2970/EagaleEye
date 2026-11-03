@@ -16,7 +16,10 @@ twice, with Task-Manager-style drill-downs for every resource.
 ## Install
 
 ```bash
-# from this repository directly (npm -g equivalent for Python)
+# simplest — bootstrap straight from this repo (npm -g equivalent)
+curl -fsSL https://github.com/haricodes2970/EagaleEye/raw/main/install.sh | sh
+
+# or, if you already use pipx
 pipx install git+https://github.com/haricodes2970/EagaleEye.git
 
 # then, in any terminal:
@@ -46,6 +49,11 @@ python3 -m venv .venv && . .venv/bin/activate
 pip install -e .[dev]
 pytest && eye
 ```
+
+## Branding
+
+The built-in emblem is ASCII (see `src/eaglei/logo.py`) — neon-green hawk's eye.
+An official image logo can live in `assets/` once designed; the tattoo is optional.
 
 ## License
 

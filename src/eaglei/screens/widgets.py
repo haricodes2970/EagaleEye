@@ -34,6 +34,11 @@ class Wing(Static, can_focus=True):
         self.set_interval(INTERVALS[self.kind], self._tick)
         self._tick()
 
+    def on_click(self) -> None:
+        """Click a wing → focus it, then drill down (Task-Manager view)."""
+        self.focus()
+        self.app.action_drill()
+
     def _tick(self) -> None:
         d = COLLECT[self.kind]()
         d["label"] = LABELS[self.kind]

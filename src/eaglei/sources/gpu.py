@@ -41,7 +41,7 @@ def top_processes(n: int = 15) -> list[dict]:
     for line in out.splitlines():
         try:
             pid, mem, pname = [x.strip() for x in line.split(",")]
-            rows.append({"pid": int(pid), "name": pname.split("/")[-1][:40], "value": round(float(mem) / 1024, 2)})
+            rows.append({"pid": int(pid), "name": pname.split()[0].split("/")[-1][:24], "value": round(float(mem) / 1024, 2)})
         except ValueError:
             continue
     rows.sort(key=lambda r: r["value"], reverse=True)
