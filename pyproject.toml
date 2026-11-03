@@ -1,0 +1,33 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "eagaleeye"
+version = "0.1.0"
+description = "EagleEye — a neon-green terminal dashboard / task manager for Linux. Type `eye`, see everything."
+readme = "README.md"
+license = "MIT"
+authors = [{ name = "haricodes2970" }]
+requires-python = ">=3.10"
+dependencies = [
+    "textual>=0.50",
+    "psutil>=5.9",
+]
+classifiers = [
+    "Environment :: Console",
+    "Operating System :: POSIX :: Linux",
+    "Topic :: System :: Monitoring",
+]
+
+[project.scripts]
+eye = "eaglei.cli:main"
+
+[project.urls]
+Repository = "https://github.com/haricodes2970/EagaleEye"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/eaglei"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
