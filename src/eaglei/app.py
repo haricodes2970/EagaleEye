@@ -8,6 +8,7 @@ from eaglei import charts
 
 from .screens.detail import DetailScreen
 from .screens.overview import Overview
+from .screens.fetch import FetchScreen
 from .screens.widgets import LABELS, Wing
 
 CSS = """
@@ -125,7 +126,10 @@ class EagleEyeApp(App):
     def on_mount(self) -> None:
         # first shuffle of the session — the vizzes are random by design
         self.wing_types = charts.shuffle(len(self.wing_kinds), seed=self.seed)
-        self.push_screen(Overview())
+        self.install_screen(Overview(), name="overview")
+        self.install_screen(FetchScreen(), name="fetch")
+        # boot into the fetch splash — eagle + hardware ledger first
+        self.push_screen("fetch")
 
     # ---- helpers -----------------------------------------------------------
     def _focused_wing(self) -> Wing | None:

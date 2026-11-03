@@ -68,11 +68,7 @@ class DockChip(Static):
 class Overview(Screen):
     """Default screen — wings grid + dock."""
 
-    BINDINGS = [
-        ("1,2,3,4,5,6", "viz", "switch viz of focused wing"),
-        ("r", "shuffle", "shuffle all wing vizzes"),
-        ("enter", "drill", "drill into focused wing"),
-    ]
+    BINDINGS = [("escape", "pop", "Return to fetch")]
 
     def compose(self) -> ComposeResult:
         seed = getattr(self.app, "seed", 0)
@@ -86,6 +82,9 @@ class Overview(Screen):
             yield Static("[dim #0f8038]viz ▸[/]", classes="dock-label")
             for i, name in enumerate(ORDER, 1):
                 yield DockChip(name, i)
+
+    def action_pop(self) -> None:
+        self.app.pop_screen()
 
 
 def wing_types_for(count: int, seed: int) -> list[str]:
