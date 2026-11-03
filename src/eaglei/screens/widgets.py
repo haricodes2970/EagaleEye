@@ -58,6 +58,47 @@ class Wing(Static, can_focus=True):
                 ("vram", d["percent"], f"{d['used_mb']:.0f}MB"),
                 ("util", d.get("util_percent", 0), ""),
             ]
+
+        # numeric-ledger fields per wing (free/occupied/running counts)
+        if self.kind == "cpu":
+            pc = d.get("per_core", [])
+            busy = [v for v in pc if v > 1.0]
+            hottest = max(pc) if pc else 0.0
+            d["fields"] = [
+                ("load", f"{d['percent']:.1f}%", d["percent"]),
+                ("hot core", f"{hottest:.1f}%", hottest),
+                ("busy cores", f"{len(busy)}/{d['cores']}"),
+                ("freq", f"{d['freq_mhz']:.0f} of {d['freq_max_mhz']:.0f} MHz"),
+                ("load avg", "/".join(f"{x:.1f}" for x in d["load_avg"][:3])),
+                ("procs running", str(d.get("nproc", "?"))),
+            ]
+        elif self.kind == "ram":
+            d["fields"] = [
+                ("occupied", f"{d['used_gb']:.1f}G / {d['total_gb']:.1f}G", d["percent"]),
+                ("free", f"{d['available_gb']:.1f}G", 100 - d["percent"]),
+                ("swap used", f"{d['swap_used_gb']:.1f}G / {d['swap_total_gb']:.0f}G", d["swap_percent"]),
+                ("procs alive", str(d.get("nproc", "?"))),
+            ]
+        elif self.kind == "disk":
+            fields = [
+                ("occupied", f"{d['used_gb']:.0f}G / {d['total_gb']:.0f}G", d["percent"]),
+                ("free", f"{round(d['total_gb'] - d['used_gb'], 1)}G", 100 - d["percent"]),
+            ]
+            for p in d.get("partitions", [])[:3]:
+                fields.append((f"{p['mountpoint'][-8:] or '/'}", f"{p['used_gb']:.0f}G/{p['total_gb']:.0f}G", p["percent"]))
+            fields += [
+                ("io read", f"{d['read_mb_s']:.1f} MB/s"),
+                ("io write", f"{d['write_mb_s']:.1f} MB/s"),
+            ]
+            d["fields"] = fields
+        elif self.kind == "gpu" and d.get("available"):
+            holders = gpu.top_processes(64)
+            d["fields"] = [
+                ("occupied", f"{d['used_mb']:.0f} / {d['total_mb']:.0f} MB", d["percent"]),
+                ("free", f"{d['total_mb'] - d['used_mb']:.0f} MB", 100 - d["percent"]),
+                ("util", f"{d.get('util_percent', 0):.0f}%", d.get("util_percent", 0)),
+                ("vram procs", str(len(holders))),
+            ]
         self._data = d
         self.history.append(d.get("percent", 0.0))
         self.refresh()

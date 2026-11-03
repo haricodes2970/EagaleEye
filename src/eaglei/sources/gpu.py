@@ -5,6 +5,7 @@ import subprocess
 
 GB = 1024**3
 _BIN = shutil.which("nvidia-smi") or "/usr/bin/nvidia-smi"
+_proc_cache: list = [0.0, []]  # (monotonic_ts, rows)
 
 
 def _qsmi(*args: str) -> str:
@@ -35,14 +36,20 @@ def collect() -> dict:
 
 
 def top_processes(n: int = 15) -> list[dict]:
-    """Processes holding VRAM, straight from nvidia-smi (requested earlier; works on this machine)."""
-    out = _qsmi("--query-compute-apps=pid,used_memory,process_name", "--format=csv,noheader,nounits")
-    rows = []
-    for line in out.splitlines():
-        try:
-            pid, mem, pname = [x.strip() for x in line.split(",")]
-            rows.append({"pid": int(pid), "name": pname.split()[0].split("/")[-1][:24], "value": round(float(mem) / 1024, 2)})
-        except ValueError:
-            continue
-    rows.sort(key=lambda r: r["value"], reverse=True)
-    return rows[:n]
+    """Processes holding VRAM, straight from nvidia-smi. Cached 2s (counting only)."""
+    import time
+
+    now = time.monotonic()
+    if not (now - _proc_cache[0] < 2.0 and _proc_cache[1]):
+        out = _qsmi("--query-compute-apps=pid,used_memory,process_name", "--format=csv,noheader,nounits")
+        rows = []
+        for line in out.splitlines():
+            try:
+                pid, mem, pname = [x.strip() for x in line.split(",")]
+                rows.append({"pid": int(pid), "name": pname.split()[0].split("/")[-1][:24], "value": round(float(mem) / 1024, 2)})
+            except ValueError:
+                continue
+        rows.sort(key=lambda r: r["value"], reverse=True)
+        _proc_cache[1] = rows
+        _proc_cache[0] = now
+    return _proc_cache[1][:n]

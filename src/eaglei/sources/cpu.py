@@ -11,6 +11,7 @@ def collect() -> dict:
         "percent": round(sum(cores) / max(len(cores), 1), 1),
         "per_core": [round(c, 1) for c in cores],
         "cores": len(cores),
+        "nproc": len(psutil.pids()),
         "freq_mhz": round(freq.current, 0) if freq else 0,
         "freq_max_mhz": round(freq.max, 0) if freq and freq.max else 0,
         "load_avg": [round(x, 2) for x in psutil.getloadavg()],

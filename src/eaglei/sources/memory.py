@@ -17,6 +17,7 @@ def collect() -> dict:
         "swap_total_gb": round(s.total / GB, 2),
         "swap_used_gb": round(s.used / GB, 2),
         "swap_percent": round(s.percent, 1),
+        "nproc": len(psutil.pids()),
     }
 
 
