@@ -8,7 +8,7 @@ def _fmt(label: str, value: str, pct: float | None, width: int, pad: int) -> str
     val_col = value
     if pct is not None:
         c = theme.bar_color(pct)
-        row = f"[dim #0f8038]{label_col:<{pad}}[/][{c}]{val_col}[/{c}]"
+        row = f"[dim #0f8038]{label_col:<{pad}}[/][{c}]{val_col}[/]"
     else:
         row = f"[dim #0f8038]{label_col:<{pad}}[/][bold #3dff7a]{val_col}[/]"
     return row

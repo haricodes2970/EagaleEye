@@ -31,5 +31,5 @@ def test_numbers_falls_back_to_percent():
 
 
 def test_seven_viz_types_registered():
-    assert len(charts.ORDER) == 7
+    assert len(charts.ORDER) == 11
     assert "numbers" in charts.ORDER

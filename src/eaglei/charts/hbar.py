@@ -21,6 +21,6 @@ def render(data: dict, width: int, height: int) -> str:
         hot_cells = max(0, hot_cells)
         empty = max(0, width - round(frac * width))
         c = bar_color(pct)
-        bar = f"[{theme.DIM}]{'▓' * dim_cells}[/{theme.DIM}][{c}]{'█' * hot_cells}[/{c}][{theme.BG}]{'·' * empty}[/{theme.BG}]"
+        bar = f"[{theme.DIM}]{'▓' * dim_cells}[/{theme.DIM}][{c}]{'█' * hot_cells}[/][{theme.BG}]{'·' * empty}[/{theme.BG}]"
         lines.append(f"{label:<8} {bar} [bold {c}]{pct:5.1f}%[/]  {caption}")
     return "\n".join(lines[: max(height - 1, 1)])

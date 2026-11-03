@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "eagaleeye"
-version = "0.1.3"
+version = "0.1.5"
 description = "EagleEye — a neon-green terminal dashboard / task manager for Linux. Type `eye`, see everything."
 readme = "README.md"
 license = "MIT"

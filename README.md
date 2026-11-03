@@ -34,13 +34,18 @@ GPU wing is NVIDIA-friendly (`nvidia-smi`) and degrades silently on other GPUs.
 | Key | Action |
 |---|---|
 | `↑↓←→` / click | focus a wing |
-| `1..7` | change the focused wing's visualization (incl. `7` = plain numbers ledger) |
+| `1..0` | change the focused wing's visualization (bar, numbers, pie, sparkline, gauge, radial, graph, area, scatter, heatmap, histogram) |
 | `R` | shuffle — randomize every wing's visualization |
 | `Enter` / click wing | drill down (Task-Manager detail screen) |
+| `g` | full-screen time-series graph of all metrics |
 | `Esc` | detail → dashboard → fetch screen |
 | `q` | quit |
 
-On boot `eye` opens the **fetch screen**: a neon-green block-glyph hawk left, hardware/session/uptime ledger right — same structured look as your references, eagle instead of lotus/spider. Any key opens the live dashboard.
+On boot `eye` opens the **fetch screen**: a neon-green block-glyph hawk left; hardware/session/uptime ledger right — same structured look as your references, eagle instead of lotus/spider. Any key opens the live dashboard.
+
+## Graph screen
+
+Press `g` on the dashboard for a rolling time-series graph of CPU, RAM, GPU and Disk usage over the last 60 samples. Esc returns to the dashboard.
 
 
 ## Build yours

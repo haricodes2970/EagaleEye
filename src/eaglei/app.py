@@ -7,8 +7,9 @@ from textual.app import App
 from eaglei import charts
 
 from .screens.detail import DetailScreen
-from .screens.overview import Overview
 from .screens.fetch import FetchScreen
+from .screens.graph import GraphScreen
+from .screens.overview import Overview
 from .screens.widgets import LABELS, Wing
 
 CSS = """
@@ -109,6 +110,7 @@ BINDINGS = [
     ("5", "viz(5)", ""),
     ("6", "viz(6)", ""),
     ("7", "viz(7)", ""),
+    ("g", "graph", "Time-series graph screen"),
 ]
 
 
@@ -128,6 +130,7 @@ class EagleEyeApp(App):
         self.wing_types = charts.shuffle(len(self.wing_kinds), seed=self.seed)
         self.install_screen(Overview(), name="overview")
         self.install_screen(FetchScreen(), name="fetch")
+        self.install_screen(GraphScreen(), name="graph")
         # boot into the fetch splash — eagle + hardware ledger first
         self.push_screen("fetch")
 
@@ -168,3 +171,7 @@ class EagleEyeApp(App):
             self.notify("[#ffd633]focus a wing first[#ffd633]")
             return
         self.push_screen(DetailScreen(wing.kind, LABELS[wing.kind]))
+
+    def action_graph(self) -> None:
+        """Full-screen time-series graph of all metrics."""
+        self.push_screen("graph")

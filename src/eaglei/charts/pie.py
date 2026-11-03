@@ -28,7 +28,7 @@ def render(data: dict, width: int, height: int) -> str:
                 # clock angle: 0° at 12 o'clock, clockwise
                 theta = (math.degrees(math.atan2(dx, -dy)) + 360) % 360
                 filled = theta <= percent / 100.0 * 360.0
-                line += f"[{c}]●[/{c}]" if filled else f"[{theme.DIM}]○[/{theme.DIM}]"
+                line += f"[{c}]●[/]" if filled else f"[{theme.DIM}]○[/]"
             elif r < 0.82:
                 line += " "
             else:

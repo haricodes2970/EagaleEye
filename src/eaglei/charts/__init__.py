@@ -1,16 +1,16 @@
-"""Chart kit. Six visualizations, one duck-typed contract.
-
-Every module exposes `render(data, width, height) -> str` with rich markup
-inline. Registry + shuffle live here. Charts are dumb: they only read numbers.
-"""
+"""Chart kit. Every module exposes `render(data, width, height) -> str`."""
 import random
 
+from .area import render as area
 from .gauge import render as gauge
 from .graph import render as graph
 from .hbar import render as bar
+from .heatmap import render as heatmap
+from .histogram import render as histogram
 from .numeric import render as numeric
 from .pie import render as pie
 from .radial import render as radial
+from .scatter import render as scatter
 from .sparkline import render as sparkline
 
 #: chart-type name -> render fn
@@ -22,9 +22,13 @@ CHARTS: dict[str, object] = {
     "gauge": gauge,
     "radial": radial,
     "graph": graph,
+    "area": area,
+    "scatter": scatter,
+    "heatmap": heatmap,
+    "histogram": histogram,
 }
 
-ORDER = list(CHARTS)  # dock display order (1..6 keys)
+ORDER: list[str] = list(CHARTS)  # dock order 1..len
 
 
 def shuffle(count: int, seed: int | None = None) -> list[str]:
