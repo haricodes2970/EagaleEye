@@ -58,6 +58,14 @@ pip install -e .[dev]
 pytest && eye
 ```
 
+> Full project context (build history, architecture, screen flow, env) is maintained
+> in [`docs/PROGRESS.md`](docs/PROGRESS.md) — start there if you're picking this up
+> in a new chat.
+
+## Version
+
+**v0.1.5** — see `git tag` and `eye --version`.
+
 ## Branding
 
 The built-in emblem is ASCII (see `src/eaglei/logo.py`) — neon-green hawk's eye.
