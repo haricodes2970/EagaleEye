@@ -34,11 +34,14 @@ GPU wing is NVIDIA-friendly (`nvidia-smi`) and degrades silently on other GPUs.
 | Key | Action |
 |---|---|
 | `↑↓←→` / click | focus a wing |
-| `1..6` | change the focused wing's visualization (pie, bar, gauge, …) |
+| `1..7` | change the focused wing's visualization (incl. `7` = plain numbers ledger) |
 | `R` | shuffle — randomize every wing's visualization |
 | `Enter` / click wing | drill down (Task-Manager detail screen) |
-| `Esc` | back to overview |
+| `Esc` | detail → dashboard → fetch screen |
 | `q` | quit |
+
+On boot `eye` opens the **fetch screen**: a neon-green block-glyph hawk left, hardware/session/uptime ledger right — same structured look as your references, eagle instead of lotus/spider. Any key opens the live dashboard.
+
 
 ## Build yours
 
