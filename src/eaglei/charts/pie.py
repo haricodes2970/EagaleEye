@@ -1,4 +1,4 @@
-"""Pie — ASCII donut: used slice in neon ramp, remaining in dim."""
+"""Pie — ASCII donut: used arc in severity color, rest dim. 2:1 terminal cells."""
 
 import math
 
@@ -7,32 +7,32 @@ from ..theme import bar_color
 
 
 def render(data: dict, width: int, height: int) -> str:
-    percent = float(data.get("percent", 0))
+    percent = max(0.0, min(100.0, float(data.get("percent", 0))))
     label = data.get("label", "load")
-    rx = max(6, width // 2 - 4)
-    ry = max(3, height - 2)
-    rows = []
-    for y in range(ry * 2):
-        # ellipse ring: keep only edge cells for donut look
+    c = bar_color(percent)
+    rows_n = max(height - 1, 2)
+    cols = max(10, width)
+
+    # ellipse radii in cell space; cells are ~2x tall => dy spans twice dx per cell
+    rx = (cols / 2) - 1.5
+    ry = rows_n / 2.0
+
+    out = []
+    for j in range(rows_n):
         line = ""
-        for x in range(rx * 2):
-            dx = (x - rx + 0.5) / rx
-            dy = (y - ry + 0.5) / ry
-            d = math.hypot(dx, dy)
-            if 0.75 <= d <= 1.05:
-                angle = (math.degrees(math.atan2(dy, dx)) + 360) % 360
-                # mark slice starting at top (-90°), clockwise
-                slice_start = -90
-                idx = (angle - slice_start) % 360
-                frac = idx / 360.0
-                line += (
-                    f"[{bar_color(percent)}]█[/{bar_color(percent)}]"
-                    if frac <= percent / 100.0
-                    else f"[{theme.DIM}]░[/{theme.DIM}]"
-                )
+        for i in range(cols):
+            dx = (i + 0.5) - (cols / 2)
+            dy = ((j + 0.5) - rows_n / 2.0) * 2.2  # aspect correction
+            r = math.hypot(dx / max(1e-9, rx), dy / max(1e-9, ry))
+            if 0.82 <= r <= 1.06:
+                # clock angle: 0° at 12 o'clock, clockwise
+                theta = (math.degrees(math.atan2(dx, -dy)) + 360) % 360
+                filled = theta <= percent / 100.0 * 360.0
+                line += f"[{c}]●[/{c}]" if filled else f"[{theme.DIM}]○[/{theme.DIM}]"
+            elif r < 0.82:
+                line += " "
             else:
                 line += " "
-        rows.append(line)
-    pct_txt = f"[bold {bar_color(percent)}]{percent:5.1f}%[/]"
-    legend = f"{label} used {pct_txt}"
-    return "\n".join(rows[: max(height - 1, 1)]) + "\n" + legend
+        out.append(line)
+    out.append(f"{label} used [bold {c}]{percent:5.1f}%[/]")
+    return "\n".join(out[:height])
