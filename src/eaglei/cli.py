@@ -4,6 +4,13 @@ import sys
 
 
 def main() -> int:
+    import sys
+
+    if "--version" in sys.argv or "-v" in sys.argv:
+        from eaglei import __version__
+
+        print(f"eagaleeye {__version__}")
+        return 0
     try:
         from eaglei.app import EagleEyeApp
     except ImportError as exc:
